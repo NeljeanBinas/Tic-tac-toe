@@ -213,6 +213,33 @@ namespace Ticc_Tac_Toe
 
         private bool CheckWinner()
         {
+            foreach (var combo in winningCombinations)
+            {
+                // Player Win
+                if (combo.All(i => buttons[i - 1].Text == PLAYER))
+                {
+                    MessageBox.Show("Player Wins!");
+                    ClearGame();
+                    return true;
+                }
+
+                // CPU Win
+                if (combo.All(i => buttons[i - 1].Text == CPU))
+                {
+                    MessageBox.Show("CPU Wins!");
+                    ClearGame();
+                    return true;
+                }
+            }
+
+            // Draw
+            if (buttons.All(btn => btn.Text != ""))
+            {
+                MessageBox.Show("It's a Draw!");
+                ClearGame();
+                return true;
+            }
+
             return false;
         }
 

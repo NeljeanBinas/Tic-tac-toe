@@ -108,7 +108,7 @@
             button5.TabIndex = 4;
             button5.Text = "X";
             button5.UseVisualStyleBackColor = false;
-            button5.Click += button5_Click;
+
             // 
             // button6
             // 
@@ -201,7 +201,7 @@
             playerscore.Size = new Size(23, 25);
             playerscore.TabIndex = 12;
             playerscore.Text = "0";
-            playerscore.Click += label4_Click;
+           
             // 
             // cpuscore
             // 
