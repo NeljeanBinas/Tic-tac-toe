@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Ticc_Tac_Toe
 {
@@ -9,6 +10,9 @@ namespace Ticc_Tac_Toe
     {
         private const string PLAYER = "X";
         private const string CPU = "O";
+
+        private int playerScore = 0;
+        private int cpuScore = 0;
 
         private Button[] buttons;
 
@@ -218,16 +222,16 @@ namespace Ticc_Tac_Toe
                 // Player Win
                 if (combo.All(i => buttons[i - 1].Text == PLAYER))
                 {
-                    MessageBox.Show("Player Wins!");
-                    ClearGame();
+                    HighlightWinningCombination(combo);
+                    CountWin(PLAYER);
                     return true;
                 }
 
                 // CPU Win
                 if (combo.All(i => buttons[i - 1].Text == CPU))
                 {
-                    MessageBox.Show("CPU Wins!");
-                    ClearGame();
+                    HighlightWinningCombination(combo);
+                    CountWin(CPU);
                     return true;
                 }
             }
@@ -241,6 +245,53 @@ namespace Ticc_Tac_Toe
             }
 
             return false;
+        }
+
+        private void HighlightWinningCombination(int[] combo)
+        {
+            // Highlight the winning buttons in gold
+            foreach (var i in combo)
+                buttons[i - 1].BackColor = Color.Gold;
+
+            Application.DoEvents();
+            Thread.Sleep(500);
+
+            // Restore the original alternating button colors
+            foreach (var i in combo)
+            {
+                buttons[i - 1].BackColor =
+                    (i % 2 == 1) ? Color.YellowGreen : Color.ForestGreen;
+            }
+        }
+
+        private void CountWin(string winner)
+        {
+            if (winner == PLAYER)
+                playerScore++;
+            else if (winner == CPU)
+                cpuScore++;
+
+            playerscore.Text = playerScore.ToString();
+            cpuscore.Text = cpuScore.ToString();
+
+            if (playerScore == 3 || cpuScore == 3)
+            {
+                string message = playerScore == 3
+                    ? "Player Wins the Game!"
+                    : "Computer Wins the Game!";
+
+                MessageBox.Show(message);
+
+                playerScore = 0;
+                cpuScore = 0;
+
+                playerscore.Text = playerScore.ToString();
+                cpuscore.Text = cpuScore.ToString();
+
+                Thread.Sleep(1000);
+            }
+
+            ClearGame();
         }
 
         private void ClearGame()
